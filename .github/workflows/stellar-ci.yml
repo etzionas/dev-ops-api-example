@@ -64,7 +64,7 @@ jobs:
           docker pull ${{ secrets.DOCKER_USERNAME }}/fastapi:latest
           docker stop fastapi-container || true
           docker rm fastapi-container || true
-          docker run -d -p 8000:8000 --name fastapi-container ${{ secrets.DOCKER_USERNAME }}/fastapi:latest
+          docker run -d -p 8000:80 --name fastapi-container ${{ secrets.DOCKER_USERNAME }}/fastapi:latest
         EOF
       # env:
       #   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
