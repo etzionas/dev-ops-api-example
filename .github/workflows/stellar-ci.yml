@@ -41,7 +41,7 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-        
+
     # Step 6: Build and push Docker image
     - name: build and push api
       id: build-push-api
@@ -67,7 +67,18 @@ jobs:
           docker rm fastapi-container || true
           docker run -d -p 8000:80 --name fastapi-container ${{ secrets.DOCKER_USERNAME }}/fastapi:latest
         EOF
+    # Step 8: Execute health check for the /health endpoint
+    - name: Check health endpoint
+      run: |
+        curl -f http://localhost:8000/health || exit 1
+
       # env:
       #   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       #   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       #   AZURE_VM_IP: ${{ secrets.AZURE_VM_IP }}
+    # Step 9: Do something if health check fails
+    - name: Rollback if health check fails
+      if: failure()
+      run: |
+        echo "Rolling back deployment"
+        # rollback commands
