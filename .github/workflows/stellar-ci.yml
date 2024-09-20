@@ -66,20 +66,22 @@ jobs:
           docker stop fastapi-container || true
           docker rm fastapi-container || true
           docker run -d -p 8000:80 --name fastapi-container ${{ secrets.DOCKER_USERNAME }}/fastapi:latest
+       EOF
 
-          # Step 8: Execute health check for the /health endpoint
-          sleep 5
-          curl -f http://localhost:8000/health || exit 1 # This will fail the job if health check fails
-        EOF
-
-
-    # Step 8: Execute health check for the /health endpoint
-    # - name: Check health endpoint
-    #  run: |
-    #    curl http://20.123.62.2:8000
-    # Step 9: Do something if health check fails
-    - name: Rollback if health check fails
+    # Step 8: Execute the healthcheck through a curl command to the /health endpoint. If it returns non zero, rollback to the stable verson
+    - name: Execute health check and Rollback if health check fails
       if: failure()
       run: |
-        echo "Rolling back deployment"
-        # rollback commands
+        echo "${{ secrets.AZURE_SSH_KEY }}" > /tmp/key.pem
+        chmod 600 /tmp/key.pem
+        mkdir -p ~/.ssh
+        touch ~/.ssh/known_hosts
+        ssh-keyscan ${{ secrets.AZURE_VM_IP }} >> ~/.ssh/known_hosts
+        ssh -T -i /tmp/key.pem ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
+          if ! curl -f http://localhost:8000/health; then
+            echo "Health check failed. Rolling back to stable version."
+            docker stop fastapi-container || true
+            docker rm fastapi-container || true
+            docker run -d -p 8000:80 --name fastapi-container tzionasev/fastapi:stable
+          fi
+        EOF
