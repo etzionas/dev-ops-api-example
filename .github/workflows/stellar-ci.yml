@@ -68,6 +68,7 @@ jobs:
           docker run -d -p 8000:80 --name fastapi-container ${{ secrets.DOCKER_USERNAME }}/fastapi:latest
 
           # Step 8: Execute health check for the /health endpoint
+          sleep 5
           curl -f http://localhost:8000/health || exit 1 # This will fail the job if health check fails
         EOF
 
