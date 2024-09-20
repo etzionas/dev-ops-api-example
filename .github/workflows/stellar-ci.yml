@@ -70,7 +70,6 @@ jobs:
 
     # Step 8: Execute the healthcheck through a curl command to the /health endpoint. If it returns non zero, rollback to the stable verson
     - name: Execute health check and Rollback if health check fails
-      if: failure()
       run: |
         echo "${{ secrets.AZURE_SSH_KEY }}" > /tmp/key.pem
         chmod 600 /tmp/key.pem
