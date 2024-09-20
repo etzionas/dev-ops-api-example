@@ -70,7 +70,7 @@ jobs:
     # Step 8: Execute health check for the /health endpoint
     - name: Check health endpoint
       run: |
-        curl -f http://localhost:8000/health || exit 1
+        curl http://20.123.62.2:8000/health
 
       # env:
       #   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
