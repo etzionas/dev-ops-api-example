@@ -82,5 +82,6 @@ jobs:
             docker stop fastapi-container || true
             docker rm fastapi-container || true
             docker run -d -p 8000:80 --name fastapi-container tzionasev/fastapi:stable
+            exit 1 # This is to make the pipeline fail after rollback to indicate to the developer that it failed
           fi
         EOF
