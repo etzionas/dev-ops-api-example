@@ -16,7 +16,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        ref: ${{ gtihub.ref }}
+        ref: ${{ github.ref }}
     # Step 2: Set up Python 3.x (for testing before Docker build)
     - name: Set up Python 3.x
       uses: actions/setup-python@v3
