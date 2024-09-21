@@ -68,7 +68,7 @@ jobs:
           docker compose -f ./dev-ops-assignment-api/docker-compose.yml pull
           docker compose -f ./dev-ops-assignment-api/docker-compose.yml down || true
           # docker rm fastapi-container || true
-          docker -f ./dev-ops-assignment-api/docker-compose.yml compose up -d
+          docker compose -f ./dev-ops-assignment-api/docker-compose.yml up -d
         EOF
 
 
