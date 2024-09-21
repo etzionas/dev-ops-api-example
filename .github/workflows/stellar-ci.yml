@@ -62,9 +62,10 @@ jobs:
         touch ~/.ssh/known_hosts  # Create the known_hosts file if it doesn't exist
         ssh-keyscan ${{ secrets.AZURE_VM_IP }} >> ~/.ssh/known_hosts
         ssh -T -i /tmp/key.pem ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
-          cd ~/dev-ops-assignmet-api
+          pwd
+          ls -l
           docker compose pull
-          docker comppose down || true
+          docker compose down || true
           docker rm fastapi-container || true
           docker compose up -d
         EOF
