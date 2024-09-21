@@ -85,7 +85,9 @@ jobs:
             docker rm fastapi-container || true
             docker run -d -p 8000:80 --name fastapi-container ${{ secrets.DOCKER_USERNAME }}/fastapi:stable
             exit 1 # Mark the pipeline as failed after rollback to indicate to the developer that it failed
-          EOF
+        EOF
+        else
+          echo "Health check passed. Continuing with the pipeline."
         fi
 
     # Step 8: Execute the healthcheck through a curl command to the /health endpoint. If it returns non zero, rollback to the stable verson
