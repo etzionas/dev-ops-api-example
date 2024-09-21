@@ -84,7 +84,7 @@ jobs:
             echo "Health check failed. Rolling back to stable version."
             # Modify the docker-compose.yml to switch to the stable image for FastAPI
             sed -i 's/image: ${{ secrets.DOCKER_USERNAME }}\/fastapi:latest/image: ${{ secrets.DOCKER_USERNAME }}\/fastapi:stable/' docker-compose.yml
-            docker compose up -d fastapi  # Only restart FastAPI service with the stable image
+            docker compose -f ./dev-ops-assignment-api/docker-compose.yml up -d fastapi  # Only restart FastAPI service with the stable image
             exit 1 # This is to make the pipeline fail after rollback to indicate to the developer that it failed
           else
             echo "health check passed. Continuing the pipeline"
