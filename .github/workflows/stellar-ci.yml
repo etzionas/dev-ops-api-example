@@ -71,6 +71,9 @@ jobs:
     # Step 8: Execute the healthcheck rhrough a curl command. If it returns non-zero, rollback to the stable version via SSH
     - name: Execute health check and Rollback if health check fails
       run: |
+        curl -f http://${{ secrets.AZURE_VM_IP }}:8000/health;
+        curl -f http://localhost:8000/health;
+        curl -f http://20.123.62.2:8000/health;
         # Perform the health check by curling the public IP of the Azure VM
         if ! curl -f http://${{ secrets.AZURE_VM_IP }}:8000/health; then
           echo "Health check failed. Rolling back to stable version."
