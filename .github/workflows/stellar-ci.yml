@@ -64,11 +64,11 @@ jobs:
         ssh -T -i /tmp/key.pem ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
           pwd
           ls -l
-          cd /home/azureuser/dev-ops-asssignment-api
-          docker compose pull
-          docker compose down || true
-          docker rm fastapi-container || true
-          docker compose up -d
+          docker compose -f ./docker-compose.yml pull
+          docker compose -f ./dev-ops-assignment-api/docker-compose.yml pull
+          docker compose -f ./dev-ops-assignment-api/docker-compose.yml down || true
+          # docker rm fastapi-container || true
+          docker -f ./dev-ops-assignment-api/docker-compose.yml compose up -d
         EOF
 
 
