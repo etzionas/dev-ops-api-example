@@ -65,8 +65,8 @@ jobs:
           pwd
           ls -l
           docker compose -f ./dev-ops-assignment-api/docker-compose.yml pull
-          docker compose -f ./dev-ops-assignment-api/docker-compose.yml down && \
-          docker rm fastapi-container
+          docker compose -f ./dev-ops-assignment-api/docker-compose.yml down # && \
+          # docker rm fastapi-container
           docker compose -f ./dev-ops-assignment-api/docker-compose.yml up -d
         EOF
 
