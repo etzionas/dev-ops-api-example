@@ -70,7 +70,7 @@ jobs:
           docker compose -f ./dev-ops-assignment-api/docker-compose.yml up -d
         EOF
 
-   - name: Execute health check and Rollback if health check fails
+    - name: Execute health check and Rollback if health check fails
       run: |
         curl http://google.com
 
