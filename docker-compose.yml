@@ -1,7 +1,7 @@
 services:
   fastapi:
     # Image will be built as soon as it is pushed to the repo
-    image: tzionasev/fastapi:latest
+    image: tzionasev/fastapi:stable
     container_name: fastapi-container
     restart: always
     ports:
