@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - staging
+
 jobs:
   deploy:
     name: test, build & push image to docker hub
@@ -40,7 +41,7 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-        
+
     # Step 6: Build and push Docker image
     - name: build and push api
       id: build-push-api
@@ -61,12 +62,37 @@ jobs:
         touch ~/.ssh/known_hosts  # Create the known_hosts file if it doesn't exist
         ssh-keyscan ${{ secrets.AZURE_VM_IP }} >> ~/.ssh/known_hosts
         ssh -T -i /tmp/key.pem ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
-          docker pull ${{ secrets.DOCKER_USERNAME }}/fastapi:latest
-          docker stop fastapi-container || true
-          docker rm fastapi-container || true
-          docker run -d -p 8000:80 --name fastapi-container ${{ secrets.DOCKER_USERNAME }}/fastapi:latest
+          pwd
+          ls -l
+          docker compose -f ./dev-ops-assignment-api/docker-compose.yml pull
+          docker compose -f ./dev-ops-assignment-api/docker-compose.yml down # && \
+          # docker rm fastapi-container
+          docker compose -f ./dev-ops-assignment-api/docker-compose.yml up -d
         EOF
-      # env:
-      #   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      #   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      #   AZURE_VM_IP: ${{ secrets.AZURE_VM_IP }}
+
+    - name: Execute health check and Rollback if health check fails
+      run: |
+        curl http://google.com
+        curl 20.123.62.2:8000 -m 5
+        curl 20.123.62.2:8000/health -m 5
+
+    # Step 8: Execute the healthcheck through a curl command to the /health endpoint. If it returns non zero, rollback to the stable verson
+    - name: Execute health check and Rollback if health check fails
+      run: |
+        echo "${{ secrets.AZURE_SSH_KEY }}" > /tmp/key.pem
+        chmod 600 /tmp/key.pem
+        mkdir -p ~/.ssh
+        touch ~/.ssh/known_hosts
+        ssh-keyscan ${{ secrets.AZURE_VM_IP }} >> ~/.ssh/known_hosts
+        ssh -T -i /tmp/key.pem ${{ secrets.AZURE_USERNAME }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
+          if ! curl -f http://localhost:8000/health; then
+            echo "Health check failed. Rolling back to stable version."
+            # Modify the docker-compose.yml to switch to the stable image for FastAPI
+            sed -i 's/image: ${{ secrets.DOCKER_USERNAME }}\/fastapi:latest/image: ${{ secrets.DOCKER_USERNAME }}\/fastapi:stable/' ./dev-ops-assignment-api/docker-compose.yml
+            docker compose -f ./dev-ops-assignment-api/docker-compose.yml up -d fastapi  # Only restart FastAPI service with the stable image
+            echo "Rolling back complete. Stable version is running."
+            exit 1 # This is to make the pipeline fail after rollback to indicate to the developer that it failed
+          else
+            echo "Health check passed. Continuing the pipeline"
+          fi
+        EOF
