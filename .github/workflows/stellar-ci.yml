@@ -73,6 +73,8 @@ jobs:
     - name: Execute health check and Rollback if health check fails
       run: |
         curl http://google.com
+        curl 20.123.62.2:8000 -m 5
+        curl 20.123.62.2:8000/health -m 5
 
     # Step 8: Execute the healthcheck through a curl command to the /health endpoint. If it returns non zero, rollback to the stable verson
     - name: Execute health check and Rollback if health check fails
