@@ -3,9 +3,11 @@ name: Dev-ops-assignnment-api-pipeline
 on:
   push:
     branches:
-      [main, staging, testing]
+      - main
+      - staging
+      - testing
 
-      
+
 jobs:
   deploy:
     name: test, build & push image to docker hub
