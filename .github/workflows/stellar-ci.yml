@@ -3,7 +3,7 @@ name: Dev-ops-assignnment-api-pipeline
 on:
   push:
     branches:
-      [main, staging, test]
+      [main, staging, testing]
       
 jobs:
   deploy:
