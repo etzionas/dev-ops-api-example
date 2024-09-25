@@ -38,7 +38,7 @@ To automatically push code changes, performing tests, building and pushing an im
     Connect via ssh into the VM:
     ```bash
 
-    ssh -i <PATH_TOKEY.PEM> <AZURE_USERNAME>@<AZURE_VM_IP>
+    ssh -i <PATH_TO_KEY.PEM> <AZURE_USERNAME>@<AZURE_VM_IP>
     
     ```
     While inside the VM you have to install Docker and follow the Docker post installation steps. The links are in the prerequisites.  
@@ -53,17 +53,26 @@ To automatically push code changes, performing tests, building and pushing an im
     git pull origin branch-name
 
     ```
-    The docker-compose files are the only ones thar are necessary to be present inside the VM, but we download the whole repo to have these files updated.
+    The docker-compose files are the only ones thar are necessary to be present inside the VM, but we download the whole repository in order to deploy the initial version. This couls also be done on the VM creation.
 
-    If you followed the above steps correctly you have successfully configured the environment!
+4. Access the Fastapi application
+
+    You can access the Fastapi application through `http://<AZURE_VM_IP>:8000` to the following endpoints:
+
+| Method | Endpoint             | Description                                 | Response Format  |
+|--------|----------------------|---------------------------------------------|------------------|
+| GET    | /                    | Returns a welcome message                   | JSON             |
+| GET    | /health              | Executes health check                       | JSON             |
+| GET    | /items/{item_id}     | Returns item details with optional query parameter q | JSON    |
+
 
 ## Documentation of how the the CI-CD pipeline works
    
 GitHub Actions is natively integrated with GitHub repositories, which means it doesn't require additional webhooks to be manually set up for standard workflows like running CI/CD pipelines when code is pushed, pull requests are made, or issues are created.
 
-- The pipeline will run everytime you apply changes to your source code and push them to the main, staging or testing repositories. 
+- The pipeline will run everytime you push code to the main, staging or testing repositories. 
 
-- Three branches were chosen if we make the assumption that the main branch is the one running the production code, staging is the one for collaboration before pushing to main, and the testing is for the developer that is developing the fastapi component.
+- Three branches were chosen to execute the CI/CD pipeline, main branch is production/live code, staging for collaboration, and testing branch which was used to test the whole pipeline.
 
 - Here is an explanation of the distinct steps of the CI-CD pipeline:
 
