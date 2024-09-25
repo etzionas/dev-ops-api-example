@@ -1,10 +1,10 @@
 # GitHub Actions workflow setup and instructions
 
 ## Prerequisites
-    To automatically push code changes, performing tests, building and pushing an image, deploying and application and performing health checks for this project you will need the following:
-    * [Docker](https://docs.docker.com/engine/installation/)
-    * [Docker post installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
-    * [Dockerhub](https://hub.docker.com/)
+To automatically push code changes, performing tests, building and pushing an image, deploying and application and performing health checks for this project you will need the following:
+* [Docker](https://docs.docker.com/engine/installation/)
+* [Docker post installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
+* [Dockerhub](https://hub.docker.com/)
 
 
 ## Recreate the environment
@@ -60,12 +60,13 @@
     If you followed the above steps correctly you have successfully configured the environment!
 
 ## Documentation of how the the CI-CD pipeline works
-    - The pipeline will run everytime you apply changes to your source code and push them to the main, staging or testing repos.  
-    
-    - **Note**: GitHub Actions is natively integrated with GitHub repositories, which means it doesn't require additional webhooks to be manually set up for standard workflows like running CI/CD pipelines when code is pushed, pull requests are made, or issues are created.
 
-    - GitHub
+- The pipeline will run everytime you apply changes to your source code and push them to the main, staging or testing repos.  
     
+- **Note**: GitHub Actions is natively integrated with GitHub repositories, which means it doesn't require additional webhooks to be manually set up for standard workflows like running CI/CD pipelines when code is pushed, pull requests are made, or issues are created.
+
+- GitHub
+
     Here is an explanation of the distinct steps of the CI-CD pipeline:
 
     - GitHub deploys an ubuntu docker container to run the jobs.
