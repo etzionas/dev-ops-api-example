@@ -1,17 +1,17 @@
 # GitHub Actions workflow setup and instructions
 
 ## Prerequisites
-To automatically push code changes, performing tests, building and pushing an image, deploying and application and performing health checks for this project you will need the following:
- * [Docker](https://docs.docker.com/engine/installation/)
- * [Docker post installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
- * [Dockerhub](https://hub.docker.com/)
+    To automatically push code changes, performing tests, building and pushing an image, deploying and application and performing health checks for this project you will need the following:
+    * [Docker](https://docs.docker.com/engine/installation/)
+    * [Docker post installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
+    * [Dockerhub](https://hub.docker.com/)
 
 
-### Recreate the environment
+## Recreate the environment
 
 1. Create Dockerhub account and GitHub Access Token to be able to push to the repository
-   - Create an account in [Dockerhub](https://hub.docker.com/)
-   - Create an [Access token](https://github.com/settings/tokens) for GitHub:
+    - Create an account in [Dockerhub](https://hub.docker.com/)
+    - Create an [Access token](https://github.com/settings/tokens) for GitHub:
     Navigate to the profile in the top right corner of GitHub -> Settings -> Developer Settings -> Personal access tokens -> Tokens (classic)  
     Generate a new token there with clicking on all the boxes and save it in a text file locally in your computer.
 
@@ -45,7 +45,7 @@ To automatically push code changes, performing tests, building and pushing an im
     ```
     While inside the VM you have to install Docker and follow the Docker post installation steps. The links are in the prerequisites.  
 
-    After completing the installation of Docker you have to pull the foked repository:
+    After completing the installation of Docker you have to pull the forked repository:
     ```bash
 
     git clone https://github.com/username/repository.git
@@ -59,8 +59,34 @@ To automatically push code changes, performing tests, building and pushing an im
 
     If you followed the above steps correctly you have successfully configured the environment!
 
-### Documentation of how the the CI-CD pipeline works
+## Documentation of how the the CI-CD pipeline works
+    - The pipeline will run everytime you apply changes to your source code and push them to the main, staging or testing repos.  
+    
+    - **Note**: GitHub Actions is natively integrated with GitHub repositories, which means it doesn't require additional webhooks to be manually set up for standard workflows like running CI/CD pipelines when code is pushed, pull requests are made, or issues are created.
 
+    - GitHub
+    
+    Here is an explanation of the distinct steps of the CI-CD pipeline:
+
+    - GitHub deploys an ubuntu docker container to run the jobs.
+
+    1. Checkout the repository in order to get the application
+
+    2. Setup python into the container in order to run the tests. There is also a solution at which the tests can run when building the image out of the Dockerfile. If this is the case, this step is redundant.
+
+    3. Install the dependencies for pythin to be able to run the tests.
+
+    4. Run the tests with pytest
+
+    5. Sets up the Buildx builder, which will be used in later stages to build and push your Docker images.
+
+    6. Login to Dockerhub using the credentials that were saved as secrets.
+
+    7. Build the image, tag it as "latest" and push it to your Dockerhub repository.
+
+    8. Setup the SSH key inside the azure VM to ~/.ssh/known_hosts, to be able to connect to the VM and run the docker compose commands.
+
+    9. Execute the docker compose commands. Pull the images, stop the previous fastapi containers (if there are any) and run the fastapi-container out of the newly created image.
 
 <!-- 2.  Github workflow setup
 Go to the Actions tab
