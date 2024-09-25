@@ -20,5 +20,5 @@ def read_item(item_id: int, q: str = None):
 @app.get("/health")
 def health_check():
     # comment out the following line to simulate a failing health check
-    raise HTTPException(status_code=500, detail="Internal Server Error")
+    # raise HTTPException(status_code=500, detail="Internal Server Error")
     return {"status": "ok"}

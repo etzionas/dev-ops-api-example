@@ -1,7 +1,7 @@
 # GitHub Actions workflow setup and instructions
 
 ## Prerequisites
-To automatically push code changes to this project you will need the following:
+To automatically push code changes, performing tests, building and pushing an image, deploying and application and performing health checks for this project you will need the following:
  * [Docker](https://docs.docker.com/engine/installation/)
  * [Docker post installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
  * [Dockerhub](https://hub.docker.com/)
@@ -9,24 +9,24 @@ To automatically push code changes to this project you will need the following:
 
 ### Recreate the environment
 
-1. Create Dockerhub account and Github secret to be able to push to the repository
+1. Create Dockerhub account and GitHub Access Token to be able to push to the repository
    - Create an account in [Dockerhub](https://hub.docker.com/)
-   - Create an access token for GitHub:
-    Go to the profile in the top right corner of GitHub -> Settings -> Developer Settings -> Personal access tokens -> Tokens (classic)
+   - Create an [Access token](https://github.com/settings/tokens) for GitHub:
+    Navigate to the profile in the top right corner of GitHub -> Settings -> Developer Settings -> Personal access tokens -> Tokens (classic)  
     Generate a new token there with clicking on all the boxes and save it in a text file locally in your computer.
 
 2. Create secrets for the workflow
 
 The first step is to fork the repository.
 
-Then go to the forked repository: Settings-> Secrets and variables -> Actions -> And we setup the following secretes:
+Then navigate to the forked repository: Settings-> Secrets and variables -> Actions -> And we setup the following secretes:
 
 ```bash
 
 NAME: AZURE_SSH_KEY
 VALUE: The azure ssh key that has been provided to you
 NAME: AZURE_USERNAME
-VALUE: the username
+VALUE: Your VM username
 NAME: AZURE_VM_IP
 VALUE: The public ip address of the VM
 NAME: DOCKERHUB_USERNAME
@@ -43,8 +43,20 @@ Connect via ssh into the VM:
   ssh -i <PATH_TOKEY.PEM> <AZURE_USERNAME>@<AZURE_VM_IP>
  
   ```
-Inside we have to install Docker and follow the Docker post installation steps. The links are in the prerequisites
+ While inside the VM you have to install Docker and follow the Docker post installation steps. The links are in the prerequisites.  
 
+After completing the installation of Docker you have to pull the foked repository:
+```bash
+
+git clone https://github.com/username/repository.git
+cd repository
+git fetch --all
+git checkout branch-name
+git pull origin branch-name
+
+```
+The docker-compose files are the only ones thar are necessary to be present inside the VM, but we download the whole repo to have these files updated.  
+The environment is ready to be used!
 
 <!-- 2.  Github workflow setup
 Go to the Actions tab
