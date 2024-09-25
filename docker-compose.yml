@@ -1,6 +1,6 @@
 networks:
-  monitor-net:
-    driver: bridge
+  fastapi-net:
+    external: true
 
 services:
   fastapi:
@@ -10,4 +10,4 @@ services:
     ports:
       - "8000:80"
     networks:
-      - monitor-net
+      - fastapi-net

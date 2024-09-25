@@ -55,6 +55,13 @@ To automatically push code changes, performing tests, building and pushing an im
     ```
     The docker-compose files are the only ones thar are necessary to be present inside the VM, but we download the whole repository in order to deploy the initial version. This couls also be done on the VM creation.
 
+    Create the docker network externally: 
+    ```bash
+
+    docker network create monitoring-net
+    
+    ```
+
 4. Access the Fastapi application
 
     You can access the Fastapi application through `http://<AZURE_VM_IP>:8000` to the following endpoints:
