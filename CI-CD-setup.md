@@ -16,7 +16,7 @@ To automatically push code changes, performing tests, building and pushing an im
 
 2. Create secrets for the workflow
 
-    The first step is to fork the repository.
+  The first step is to fork the repository.
 
     Then navigate to the forked repository: Settings-> Secrets and variables -> Actions -> And we setup the following secretes:
 
@@ -62,7 +62,7 @@ To automatically push code changes, performing tests, building and pushing an im
    
  GitHub Actions is natively integrated with GitHub repositories, which means it doesn't require additional webhooks to be manually set up for standard workflows like running CI/CD pipelines when code is pushed, pull requests are made, or issues are created.
 
-- The pipeline will run everytime you apply changes to your source code and push them to the main, staging or testing repos. 
+- The pipeline will run everytime you apply changes to your source code and push them to the main, staging or testing repositories. 
 
 - Three branches were chosen if we make the assumption that the main branch is the one running the production code, staging is the one for collaboration before pushing to main, and the testing is for the developer that is developing the fastapi component.
 
@@ -74,7 +74,7 @@ To automatically push code changes, performing tests, building and pushing an im
 
     2. Setup python into the container in order to run the tests. There is also a solution at which the tests can run when building the image out of the Dockerfile. If this is the case, this step is redundant.
 
-    3. Install the dependencies for pythin to be able to run the tests.
+    3. Install the dependencies for python to be able to run the tests.
 
     4. Run the tests with Pytest.
 
@@ -88,15 +88,17 @@ To automatically push code changes, performing tests, building and pushing an im
 
     9. Execute the docker compose commands. Pull the images, stop the previous fastapi containers (if there are any) and run the fastapi-container out of the newly created image.
 
-    - **Note**: Docker compose was chosen because there may be more containers under development. These can be added as services to the docker compose file. Also we  choose to stop and start only the fastapi service in case there are other services that we do not want to touch.
+        - **Note**: Docker compose was chosen because there may be more containers under development. These can be added as services to the docker compose file. Also we  choose to stop and start only the fastapi service in case there are other services that we do not want to touch.
 
     10. Run healthcheck and rollback if it fails. The rationale is to ssh into the VM and curl to `http://localhost:8000/health` endpoint. If it returns non-zero output, then roll back to a tagged "stable" image.
 
-    - **Note**: We assume that there is a stable image tagged manually that is running and passed the healthcheck.
+        - **Notes** 
+        
+          - We assume that there is a stable image tagged manually that is running and passed the healthcheck.
 
-    - **Note**: If health check failed, we use exit code 1 to break the pipeline and indicate it to the developer.
+          - If health check failed, we use exit code 1 to break the pipeline and indicate it to the developer.
 
-    - **Note**: It would be good practice to run the healthcheck outside of the the VM, directly curling to `http://<AZURE_VM_IP>:8000/health` without the ssh login, but the VM refuses the connection.
+          - It would be good practice to run the healthcheck outside of the the VM, directly curling to `http://<AZURE_VM_IP>:8000/health` without the ssh login, but the VM refuses the connection.
 
 <!-- 2.  Github workflow setup
 Go to the Actions tab
