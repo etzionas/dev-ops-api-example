@@ -1,7 +1,6 @@
 networks:
-  dev-ops-assignment-api:
+  monitor-net:
     driver: bridge
-    name: dev-ops-assignment-api
 
 services:
   fastapi:
@@ -11,4 +10,4 @@ services:
     ports:
       - "8000:80"
     networks:
-      - dev-ops-assignment-api
+      - monitor-net

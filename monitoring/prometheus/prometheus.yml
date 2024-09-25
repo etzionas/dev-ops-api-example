@@ -31,7 +31,7 @@ scrape_configs:
     static_configs:
       - targets: ['fastapi:80']
 
-  - job_name: 'fast-api-health-check'
+  - job_name: 'fastapi-health-check'
     metrics_path: '/health'  
     scrape_interval: 15s
     static_configs:
