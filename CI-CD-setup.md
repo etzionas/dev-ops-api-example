@@ -16,10 +16,9 @@ To automatically push code changes, performing tests, building and pushing an im
 
 2. Create secrets for the workflow
 
-  The first step is to fork the repository.
+    The first step is to fork the repository.
 
     Then navigate to the forked repository: Settings-> Secrets and variables -> Actions -> And we setup the following secretes:
-
     ```bash
 
     NAME: AZURE_SSH_KEY
@@ -60,7 +59,7 @@ To automatically push code changes, performing tests, building and pushing an im
 
 ## Documentation of how the the CI-CD pipeline works
    
- GitHub Actions is natively integrated with GitHub repositories, which means it doesn't require additional webhooks to be manually set up for standard workflows like running CI/CD pipelines when code is pushed, pull requests are made, or issues are created.
+GitHub Actions is natively integrated with GitHub repositories, which means it doesn't require additional webhooks to be manually set up for standard workflows like running CI/CD pipelines when code is pushed, pull requests are made, or issues are created.
 
 - The pipeline will run everytime you apply changes to your source code and push them to the main, staging or testing repositories. 
 
@@ -78,7 +77,7 @@ To automatically push code changes, performing tests, building and pushing an im
 
     4. Run the tests with Pytest.
 
-    5. Sets up the Buildx builder, which will be used in later stages to build and push your Docker images.
+    5. Set up the Buildx builder, which will be used in later stages to build and push your Docker images.
 
     6. Login to Dockerhub using the credentials that were saved as secrets.
 
