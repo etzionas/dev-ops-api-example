@@ -11,4 +11,4 @@ services:
     ports:
       - "8000:80"
     networks:
-      - azurenet
+      - dev-ops-assignment-api

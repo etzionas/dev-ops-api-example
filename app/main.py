@@ -1,13 +1,13 @@
 from fastapi import FastAPI, HTTPException
-# from prometheus_fastapi_instrumentator import Instrumentator
+from prometheus_fastapi_instrumentator import Instrumentator
 
 app = FastAPI()
 
-# # Initialize the Prometheus Instrumentator
-# instrumentator = Instrumentator()
+# Initialize the Prometheus Instrumentator
+instrumentator = Instrumentator()
 
-# # Instrument the FastAPI app
-# instrumentator.instrument(app).expose(app)
+# Instrument the FastAPI app
+instrumentator.instrument(app).expose(app)
 
 @app.get("/")
 def read_root():
