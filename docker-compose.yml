@@ -1,10 +1,10 @@
 networks:
   dev-ops-assignment-api:
-      external: true
+    driver: bridge
+    name: dev-ops-assignment-api
 
 services:
   fastapi:
-    # Image will be built as soon as it is pushed to the repo
     image: tzionasev/fastapi:${IMAGE_TAG:-latest}
     container_name: fastapi-container
     restart: always
