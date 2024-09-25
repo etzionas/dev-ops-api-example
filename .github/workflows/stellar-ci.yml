@@ -51,7 +51,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/fastapi:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/fastapi:latest
 
       # Step 7 Setup SSH key to connect to the Azure VM
       - name: Setup SSH key and add it to known hosts

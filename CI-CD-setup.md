@@ -1,20 +1,17 @@
 # GitHub Actions workflow setup and instructions
 
 ## Prerequisites
-To automatically set code changes to this project you will need the following:
+To automatically push code changes to this project you will need the following:
  * [Docker](https://docs.docker.com/engine/installation/)
- To be able to use docker with sudo rights:
  * [Docker post installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
- Dockerhub account
  * [Dockerhub](https://hub.docker.com/)
 
 
 ### Recreate the environment
 
 1. Create Dockerhub account and Github secret to be able to push to the repository
-    To create an account in Dockerhub:
-   * [Dockerhub](https://hub.docker.com/)
-    To create an access token for GitHub:
+   - Create an account in [Dockerhub](https://hub.docker.com/)
+   - Create an access token for GitHub:
     Go to the profile in the top right corner of GitHub -> Settings -> Developer Settings -> Personal access tokens -> Tokens (classic)
     Generate a new token there with clicking on all the boxes and save it in a text file locally in your computer.
 
@@ -41,8 +38,9 @@ VALUE: Your dockerhub password or token
 
 3. Setup the environment inside the VM
 Connect via ssh into the VM:
-  ```
-  ssh -i <path_to_key.pem> <AZURE_USERNAME>@<AZURE_VM_IP>
+  ```bash
+
+  ssh -i <PATH_TOKEY.PEM> <AZURE_USERNAME>@<AZURE_VM_IP>
  
   ```
 Inside we have to install Docker and follow the Docker post installation steps. The links are in the prerequisites
