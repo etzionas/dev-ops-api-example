@@ -1,5 +1,5 @@
 networks:
-  azurenet:
+  dev-ops-assignment-api:
       external: true
 
 services:
