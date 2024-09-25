@@ -108,7 +108,7 @@ GitHub Actions is natively integrated with GitHub repositories, which means it d
 
           - It would be good practice to run the healthcheck outside of the the VM, directly curling to `http://<AZURE_VM_IP>:8000/health` without the ssh login, but the VM refuses the connection.
 
-          - To execute the healthcheck functionality, you have to comment out line 23 `raise HTTPException(status_code=500, detail="Internal Server Error")` of main.py and push to the repository.
+          - To execute the healthcheck functionality, you have to comment out line 23 of main.py: `raise HTTPException(status_code=500, detail="Internal Server Error")`, and push to the repository.
 
 <!-- 2.  Github workflow setup
 Go to the Actions tab
