@@ -1,0 +1,49 @@
+{
+  "panels": [
+    {
+      "type": "gauge",
+      "title": "FastAPI Job Status",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "up{job='fastapi'}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "gauge": {
+        "minValue": 0,
+        "maxValue": 1,
+        "show": true,
+        "thresholdLabels": true,
+        "thresholdMarkers": true
+      },
+      "color": {
+        "background": false,
+        "value": true,
+        "text": true,
+        "thresholds": {
+          "0": "red",
+          "1": "green"
+        }
+      },
+      "valueMaps": [
+        {
+          "value": "1",
+          "text": "Up"
+        },
+        {
+          "value": "0",
+          "text": "Down"
+        }
+      ],
+      "valueName": "current"
+    }
+  ],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  }
+}

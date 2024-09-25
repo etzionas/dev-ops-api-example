@@ -38,3 +38,12 @@ groups:
     annotations:
       summary: "Server storage is almost full"
       description: "Docker host storage usage is {{ humanize $value}}%. Reported by instance {{ $labels.instance }} of job {{ $labels.job }}."
+
+  - alert: monitor_service_down
+    expr: up{job='fastapi'} == 0
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      summary: "FastAPI Service is Down"
+      description: "The FastAPI service (instance: {{ $labels.instance }}) is not reachable."
