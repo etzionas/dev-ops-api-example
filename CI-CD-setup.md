@@ -59,11 +59,11 @@ To automatically push code changes, performing tests, building and pushing an im
 
     You can access the Fastapi application through `http://<AZURE_VM_IP>:8000` to the following endpoints:
 
-| Method | Endpoint             | Description                                 | Response Format  |
-|--------|----------------------|---------------------------------------------|------------------|
-| GET    | /                    | Returns a welcome message                   | JSON             |
-| GET    | /health              | Executes health check                       | JSON             |
-| GET    | /items/{item_id}     | Returns item details with optional query parameter q | JSON    |
+    | Method | Endpoint             | Description                                 | Response Format  |
+    |--------|----------------------|---------------------------------------------|------------------|
+    | GET    | /                    | Returns a welcome message                   | JSON             |
+    | GET    | /health              | Executes health check                       | JSON             |
+    | GET    | /items/{item_id}     | Returns item details with optional query parameter q | JSON    |
 
 
 ## Documentation of how the the CI-CD pipeline works
@@ -107,6 +107,8 @@ GitHub Actions is natively integrated with GitHub repositories, which means it d
           - If health check failed, we use exit code 1 to break the pipeline and indicate it to the developer.
 
           - It would be good practice to run the healthcheck outside of the the VM, directly curling to `http://<AZURE_VM_IP>:8000/health` without the ssh login, but the VM refuses the connection.
+
+          - To execute the healthcheck functionality, you have to comment out line 23 `raise HTTPException(status_code=500, detail="Internal Server Error")` of main.py and push to the repository.
 
 <!-- 2.  Github workflow setup
 Go to the Actions tab
