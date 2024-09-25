@@ -66,7 +66,7 @@ To automatically push code changes, performing tests, building and pushing an im
     | GET    | /items/{item_id}     | Returns item details with optional query parameter q | JSON    |
 
 
-## Documentation of how the the CI-CD pipeline works
+## CI-CD pipeline steps
    
 GitHub Actions is natively integrated with GitHub repositories, which means it doesn't require additional webhooks to be manually set up for standard workflows like running CI/CD pipelines when code is pushed, pull requests are made, or issues are created.
 
@@ -100,10 +100,7 @@ GitHub Actions is natively integrated with GitHub repositories, which means it d
         SSH into the VM, curl `http://localhost:8000/health` endpoint.
         If it returns non-zero output, then roll back to an image tagged as "stable".
 
-
-        - **Note**: Docker compose was chosen because there may be more containers under development. These can be added as services to the docker compose file. Also we  choose to stop and start only the fastapi service in case there are other services that we do not want to touch.
-
-    10. Run healthcheck and rollback if it fails. The rationale is to ssh into the VM and curl to `http://localhost:8000/health` endpoint. If it returns non-zero output, then roll back to a tagged "stable" image.
+        <!-- - **Note**: Docker compose was chosen because there may be more containers under development. These can be added as services to the docker compose file. Also we  choose to stop and start only the fastapi service in case there are other services that we do not want to touch. -->
 
 ### Design Decisions
 

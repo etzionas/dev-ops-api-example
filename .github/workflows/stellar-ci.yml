@@ -74,7 +74,7 @@ jobs:
               echo "> Health check failed. Rolling back to stable version."
               IMAGE_TAG=stable docker compose -f ./dev-ops-assignment-api/docker-compose.yml up -d fastapi  # Only restart FastAPI service with the stable image
               echo "> Rolling back complete. Stable version is running."
-              exit 1 # This is to make the pipeline fail after rollback to indicate to the developer that it failed
+              exit 1
             else
               echo "> Health check passed. Continuing the pipeline"
             fi
