@@ -1,7 +1,7 @@
 # GitHub Actions workflow setup and instructions
 
 ## Prerequisites
-To automatically set code changes to this project you will need the following development kits.
+To automatically set code changes to this project you will need the following:
  * [Docker](https://docs.docker.com/engine/installation/)
  To be able to use docker with sudo rights:
  * [Docker post installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
@@ -24,21 +24,20 @@ The first step is to fork the repository.
 
 Then go to the forked repository: Settings-> Secrets and variables -> Actions -> And we setup the following secretes:
 
-    ```
+```bash
 
-    bash
-    NAME: AZURE_SSH_KEY
-    VALUE: The azure ssh key that has been provided to you
-    NAME: AZURE_USERNAME
-    VALUE: the username
-    NAME: AZURE_VM_IP
-    VALUE: The public ip address of the VM
-    NAME: DOCKERHUB_USERNAME
-    VALUE: You dockerhub username
-    NAME: DOCKERHUB_TOKEN
-    VALUE: Your dockerhub password or token
+NAME: AZURE_SSH_KEY
+VALUE: The azure ssh key that has been provided to you
+NAME: AZURE_USERNAME
+VALUE: the username
+NAME: AZURE_VM_IP
+VALUE: The public ip address of the VM
+NAME: DOCKERHUB_USERNAME
+VALUE: You dockerhub username
+NAME: DOCKERHUB_TOKEN
+VALUE: Your dockerhub password or token
 
-    ```
+```
 
 3. Setup the environment inside the VM
 Connect via ssh into the VM:
