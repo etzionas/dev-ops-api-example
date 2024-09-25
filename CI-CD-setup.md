@@ -74,43 +74,42 @@ GitHub Actions is natively integrated with GitHub repositories, which means it d
 
 - Three branches were chosen to execute the CI/CD pipeline, main branch is production/live code, staging for collaboration, and testing branch which was used to test the whole pipeline.
 
-- Here is an explanation of the distinct steps of the CI-CD pipeline:
+- Here is a detailed list of the distinct steps for the CI/CD pipeline:
 
     - GitHub deploys an ubuntu docker container to run the jobs.
 
-    1. Checkout the repository in order to get the application
+ 1. Checkout the repository in order to retrieve latest changes
 
-    2. Setup python into the container in order to run the tests. There is also a solution at which the tests can run when building the image out of the Dockerfile. If this is the case, this step is redundant.
+    2. Setup python into the container.
 
-    3. Install the dependencies for python to be able to run the tests.
+    3. Setup python environment by installing application dependencies.
 
     4. Run the tests with Pytest.
 
-    5. Set up the Buildx builder, which will be used in later stages to build and push your Docker images.
+    5. Set up the Buildx builder, in order to build and push your Docker image.
 
-    6. Login to Dockerhub using the credentials that were saved as secrets.
+    6. Login to Dockerhub using the credentials from secrets.
 
     7. Build the image, tag it as "latest" and push it to your Dockerhub repository.
 
-    8. Setup the SSH key inside the azure VM to ~/.ssh/known_hosts, to be able to connect to the VM and run the docker compose commands.
+    8. Setup the SSH key inside the azure VM to ~/.ssh/known_hosts, in order to connect to the VM.
 
-    9. Execute the docker compose commands. Pull the images, stop the previous fastapi containers (if there are any) and run the fastapi-container out of the newly created image.
+    9. Pull the new image, stop the previous fastapi containers (if there are any) and rerun the fastapi-container from the new image.
+
+    10. Run healthcheck and rollback if it fails.
+        SSH into the VM, curl `http://localhost:8000/health` endpoint.
+        If it returns non-zero output, then roll back to an image tagged as "stable".
+
 
         - **Note**: Docker compose was chosen because there may be more containers under development. These can be added as services to the docker compose file. Also we  choose to stop and start only the fastapi service in case there are other services that we do not want to touch.
 
     10. Run healthcheck and rollback if it fails. The rationale is to ssh into the VM and curl to `http://localhost:8000/health` endpoint. If it returns non-zero output, then roll back to a tagged "stable" image.
 
-        - **Notes** 
-        
-          - We assume that there is a stable image tagged manually that is running and passed the healthcheck.
+### Design Decisions
 
-          - If health check failed, we use exit code 1 to break the pipeline and indicate it to the developer.
-
-          - It would be good practice to run the healthcheck outside of the the VM, directly curling to `http://<AZURE_VM_IP>:8000/health` without the ssh login, but the VM refuses the connection.
-
-          - To execute the healthcheck functionality, you have to comment out line 23 of main.py: `raise HTTPException(status_code=500, detail="Internal Server Error")`, and push to the repository.
-
-<!-- 2.  Github workflow setup
-Go to the Actions tab
-Go to new workflow 
-And we create a workflow file -->
+* We save all our credentials as secrets for security reasons.
+* We assume that there is a stable image tagged manually that is running and passes the healthcheck.
+* We could create a rollback mechanism that could retrieve the most recent healthy image.
+* If health check failed, we use exit code 1 to break the pipeline and indicate it to the developer.
+* Since the deploy will deploy an image either way we could just print an informative message and return 0 (successful run)
+* It would be good practice to run the healthcheck outside of the the VM, directly curling to `http://<AZURE_VM_IP>:8000/health` without the ssh login, but that was not possible inside the GitΗub Runner at the moment.
