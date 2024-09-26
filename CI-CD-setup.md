@@ -9,8 +9,11 @@ To automatically push code changes, performing tests, building and pushing an im
 ## Recreate the environment
 
 1. Create Dockerhub account and GitHub Access Token to be able to push to the repository
-    - Create an account in [Dockerhub](https://hub.docker.com/)
-    - Create an [Access token](https://github.com/settings/tokens) for GitHub:
+
+- Create an account in [Dockerhub](https://hub.docker.com/)
+
+- Create an [Access token](https://github.com/settings/tokens) for GitHub:
+    
     Navigate to the profile in the top right corner of GitHub -> Settings -> Developer Settings -> Personal access tokens -> Tokens (classic)  
     Generate a new token there with clicking on all the boxes and save it in a text file locally in your computer.
 
@@ -110,13 +113,19 @@ GitHub Actions is natively integrated with GitHub repositories, thus removing th
 
 ### Design Decisions
 
-* We save all our credentials as secrets for security reasons.
-* We assume that there is a stable image tagged manually that is running and passes the healthcheck.
-* We could create a rollback mechanism that could retrieve the most recent healthy image.
-* If health check failed, we use exit code 1 to break the pipeline and indicate it to the developer.
-* Since the deploy will deploy an image either way we could just print an informative message and return 0 (successful run)
-* It would be good practice to run the healthcheck outside of the the VM, directly curling to `http://<AZURE_VM_IP>:8000/health` without the ssh login, but that was not possible inside the GitΗub Runner at the moment.
-* We used the init_setup.sh inside the repository to simplify the process. Currently the github repository is a sinfge point of reference, for easier initial setup. In a production environment, upon VM creation a configurator would perform such tasks and the repository would not keep more than the required configuration details.
+- We save all our credentials as secrets for security reasons.
+  
+- We assume that there is a stable image tagged manually that is running and passes the healthcheck.
+  
+- We could create a rollback mechanism that could retrieve the most recent healthy image.
+  
+- If health check failed, we use exit code 1 to break the pipeline and indicate it to the developer.
+  
+- Since the deploy will deploy an image either way we could just print an informative message and return 0 (successful run)
+  
+- It would be good practice to run the healthcheck outside of the the VM, directly curling to `http://<AZURE_VM_IP>:8000/health` without the ssh login, but that was not possible inside the GitΗub Runner at the moment.
+
+- We used the init_setup.sh inside the repository to simplify the process. Currently the github repository is a sinfge point of reference, for easier initial setup. In a production environment, upon VM creation a configurator would perform such tasks and the repository would not keep more than the required configuration details.
 
 ## Monitoring Implementation
 
@@ -166,11 +175,11 @@ Grafana: <AZURE_VM_IP>:8950 username:admin password:admin
 
 - If you stop the fastapi container, the custom panels in Docker container tab will indicate that fastapi service is down.
 
-- Alerts can be seen in the http://<AZURE_VM_IP>:8950/alerting/list. If you stop the fastapi container, the rule will fire up indicating that fastapi service is down.
+- Alerts can be seen in: `http://<AZURE_VM_IP>:8950/alerting/list`. If you stop the fastapi container, the rule will fire up indicating that fastapi service is down.
 
 ## Todo
 
-- In terms of observability we should add beyond metrics ( Prometheus) also Loki for logging and Tempo for traces.
+- In terms of observability we should add beyond metrics (Prometheus) also Loki for logging and Tempo for traces.
 
 - A retention strategy for docker images is required.
 
