@@ -82,3 +82,8 @@ jobs:
             IMAGE_TAG=stable docker compose -f ./dev-ops-assignment-api/docker-compose.yml up -d fastapi
             echo "> Rolling back complete. Stable version is running."
           EOF
+
+      - name: Stop SSH Agent
+        run: |
+          eval $(ssh-agent -k)
+          rm key.pem
