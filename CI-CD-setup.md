@@ -63,6 +63,22 @@ To automatically push code changes, performing tests, building and pushing an im
     ```
     On a newly setup machine, relog may be required to setup properly non root docker user
 
+    To start the service manually run:
+
+    ```bash
+
+    docker compose up -d
+
+    ```
+
+    To stop the service manually run:
+
+    ```bash
+
+    docker compose down
+
+    ```
+
 
 4. Access the Fastapi application
 
@@ -151,6 +167,15 @@ NodeExporter <AZURE_VM_IP>:8905
 Grafana: <AZURE_VM_IP>:8950 username:admin password:admin
 
 ```
+
+To stop the services run: 
+
+```bash
+
+docker compose -f docker-compose.monitoring.yml down -v
+
+```
+Use the `-v` flag only if you want to clear the volumes.
 
 ### Technologies
 
