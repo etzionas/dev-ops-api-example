@@ -5,7 +5,7 @@ app = FastAPI()
 
 # Initialize the Prometheus Instrumentator
 instrumentator = Instrumentator()
-#
+##
 # Instrument the FastAPI app
 instrumentator.instrument(app).expose(app)
 
