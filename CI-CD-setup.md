@@ -154,29 +154,29 @@ Grafana: <AZURE_VM_IP>:8950 username:admin password:admin
 
 ### Technologies
 
-- cAdvisor is responsible for monitoring everything regarding container performance. The graphs can be seen in the cAdvisor endpoint and also in Grafana.
+- **cAdvisor** is responsible for monitoring everything regarding container performance. The graphs can be seen in the cAdvisor endpoint and also in Grafana.
 
-- Alertmanager is responsible for alerting by modifying the alert.rules. We have implemented 4 alert rules for the cpu load, memory load, storage load and the moitoring of the fastapi service. If they fire up, a slack template is sent to slack.
+- **Alertmanager** is responsible for alerting by modifying the alert.rules. We have implemented 4 alert rules for the cpu load, memory load, storage load and the moitoring of the fastapi service. If they fire up, a Slack template message is sent to  a Slack template webhook.
 
-- NodeExporter is responsible for handling all the metrics of the host VM. In the /metrics tab you can see them in text format.
+- **NodeExporter** is responsible for handling all the metrics of the host VM. In the /metrics tab you can see them in text format.
 
-- Prometheus monitoring monitors a lot of metrics like queries, http requests, latencies etc.
+- **Prometheus** monitoring monitors a lot of metrics like queries, http requests, latencies etc.
 
-- Grafana is responsible for visualizing all of the above.
+- **Grafana** is responsible for visualizing all of the above.
 
 ### Notes
 
 - After logging into Grafana into the dashborads tab you can see all the corresponding predefined dashboards.
 
-- Docker containers tabs includes the docker containers performance metrics (cAdvisor). We have implemented 2 custom panels that can be visualised through the dashboards.
+- **Docker Containers** tabs includes the docker containers performance metrics (cAdvisor). We have implemented 2 custom panels that can be visualised through the dashboards.
 
-- Docker host tab monitors  the host VM performance metrics that Nodeexporter exposes.
+- **Docker Host** tab monitors  the host VM performance metrics that Nodeexporter exposes.
 
-- Monitor services tab is the prometheus monitoring services.
+- **Monitor Services** tab is the prometheus monitoring services.
 
 - If you stop the fastapi container, the custom panels in Docker container tab will indicate that fastapi service is down.
 
-- Alerts can be seen in: `http://<AZURE_VM_IP>:8950/alerting/list`. If you stop the fastapi container, the rule will fire up indicating that fastapi service is down.
+- **Alerts** can be seen in: `http://<AZURE_VM_IP>:8950/alerting/list`. If you stop the fastapi container, the rule will fire up indicating that fastapi service is down.
 
 ## Todo
 
