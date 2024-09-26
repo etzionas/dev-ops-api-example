@@ -111,7 +111,6 @@ GitHub Actions is natively integrated with GitHub repositories, thus removing th
         SSH into the VM, curl `http://localhost:8000/health` endpoint.
         If it returns non-zero output, then roll back to an image tagged as "stable".
 
-    11. Remove the key.
 
 ### Design Decisions
 

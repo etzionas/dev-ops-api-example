@@ -81,8 +81,5 @@ jobs:
             echo "> Health check failed after multiple attempts. Rolling back to stable version."
             IMAGE_TAG=stable docker compose -f ./dev-ops-assignment-api/docker-compose.yml up -d fastapi
             echo "> Rolling back complete. Stable version is running."
+            exit 1
           EOF
-
-      - name: Stop SSH Agent
-        run: |
-          rm /tmp/key.pem
