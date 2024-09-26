@@ -35,6 +35,7 @@ To automatically push code changes, performing tests, building and pushing an im
     ```
 
 3. Setup the environment inside the VM
+
     Connect via ssh into the VM:
     ```bash
 
