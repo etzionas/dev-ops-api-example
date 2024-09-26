@@ -1,28 +1,13 @@
+networks:
+  fastapi-net:
+    external: true
+
 services:
   fastapi:
-    # Image will be built as soon as it is pushed to the repo
-    image: tzionasev/fastapi:stable
+    image: ${DOCKERHUB_USERNAME}/fastapi:${IMAGE_TAG:-latest}
     container_name: fastapi-container
     restart: always
     ports:
       - "8000:80"
     networks:
-      - azurenet
-
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus-container
-    restart: always
-    ports:
-      - "9000:9090"  # Expose Prometheus UI on port 9000
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Mount your local config file->container config file
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-    networks:
-      - azurenet  # Use the same external network
-
-networks:
-  azurenet:
-      external: true
-
+      - fastapi-net
