@@ -2,17 +2,6 @@ networks:
   fastapi-net:
     external: true
 
-x-logging: &default-logging
-  driver: loki
-  options:
-    loki-url: 'http://loki:3100/api/prom/push'
-    loki-pipeline-stages: |
-      - multiline:
-          firstline: '^\d{4}-\d{2}-\d{2} \d{1,2}:\d{2}:\d{2}'
-          max_wait_time: 3s
-      - regex:
-          expression: '^(?P<time>\d{4}-\d{2}-\d{2} \d{1,2}:\d{2}:\d{2},d{3}) (?P<message>(?s:.*))$$'
-
 services:
   fastapi:
     image: tzionasev/fastapi:${IMAGE_TAG:-latest}
@@ -22,4 +11,3 @@ services:
       - "8000:80"
     networks:
       - fastapi-net
-    logging: *default-logging
