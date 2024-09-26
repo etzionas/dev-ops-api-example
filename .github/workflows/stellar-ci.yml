@@ -85,5 +85,4 @@ jobs:
 
       - name: Stop SSH Agent
         run: |
-          eval $(ssh-agent -k)
-          rm key.pem
+          rm /tmp/key.pem
