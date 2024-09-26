@@ -118,3 +118,29 @@ GitHub Actions is natively integrated with GitHub repositories, which means it d
 * If health check failed, we use exit code 1 to break the pipeline and indicate it to the developer.
 * Since the deploy will deploy an image either way we could just print an informative message and return 0 (successful run)
 * It would be good practice to run the healthcheck outside of the the VM, directly curling to `http://<AZURE_VM_IP>:8000/health` without the ssh login, but that was not possible inside the GitΗub Runner at the moment.
+
+## Monitoring Implementation
+
+We have implemented prometheus, cadvidsor, alertmanager, nodexporter and grafana for monitoring the system.
+
+The services can be accessed through your browser the following endpoints:
+
+```bash
+
+Prometheus <AZURE_VM_IP>:8900
+cAdvisor <AZURE_VM_IP>:8940
+Alertmanager <AZURE_VM_IP>:8903
+Nodeexporter <AZURE_VM_IP>:8905
+Grafana <AZURE_VM_IP>:8950 username:admin password:admin
+
+```
+
+- cAdvisor is responsible for monitoring everything regarding container resources consumption. The graphs can be seen in the page and also in grafana.
+
+- Alertmanager is responsible for alerting by modifying the alert.rules. We have implemented 3 alert rules for the cpu load, memory load, storage load and the moitoring of the fastapi service. If they fire up, a message in slack is sent.
+
+- Nodeexporter is responsible for handling all the metrics of the host VM. In the /metrics tab you can see them in text format.
+
+- Prometheus monitoring monitors a lot of metrics like queries, http requests, latencies etc.
+
+- Grafana is responsible for visualizing all of the above.

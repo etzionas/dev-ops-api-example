@@ -4,7 +4,7 @@ networks:
 
 services:
   fastapi:
-    image: tzionasev/fastapi:${IMAGE_TAG:-latest}
+    image: ${DOCKERHUB_USERNAME}/fastapi:${IMAGE_TAG:-latest}
     container_name: fastapi-container
     restart: always
     ports:
