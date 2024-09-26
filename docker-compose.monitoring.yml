@@ -41,7 +41,7 @@ services:
       org.label-schema.group: "monitoring"
     depends_on:
       - loki
-    logging: *default-loggin
+    logging: *default-logging
   
   loki:
     image: grafana/loki:3.0.0
