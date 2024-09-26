@@ -11,8 +11,8 @@ x-logging: &default-logging
           firstline: '^\d{4}-\d{2}-\d{2} \d{1,2}:\d{2}:\d{2}'
           max_wait_time: 3s
       - regex:
-
           expression: '^(?P<time>\d{4}-\d{2}-\d{2} \d{1,2}:\d{2}:\d{2},d{3}) (?P<message>(?s:.*))$$'
+
 services:
   fastapi:
     image: tzionasev/fastapi:${IMAGE_TAG:-latest}

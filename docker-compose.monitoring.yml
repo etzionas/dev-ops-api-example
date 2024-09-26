@@ -50,7 +50,7 @@ services:
     networks:
       - fastapi-net
     ports:
-      - "8960:3100"
+      - "3100:3100"
 
   alertmanager:
     image: prom/alertmanager:v0.27.0
