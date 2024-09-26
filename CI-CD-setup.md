@@ -10,9 +10,9 @@ To automatically push code changes, performing tests, building and pushing an im
 
 1. Create Dockerhub account and GitHub Access Token to be able to push to the repository
 
-- Create an account in [Dockerhub](https://hub.docker.com/)
+   - Create an account in [Dockerhub](https://hub.docker.com/)
 
-- Create an [Access token](https://github.com/settings/tokens) for GitHub:
+   - Create an [Access token](https://github.com/settings/tokens) for GitHub:
     
     Navigate to the profile in the top right corner of GitHub -> Settings -> Developer Settings -> Personal access tokens -> Tokens (classic)  
     Generate a new token there with clicking on all the boxes and save it in a text file locally in your computer.
