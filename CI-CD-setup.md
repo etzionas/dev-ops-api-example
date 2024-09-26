@@ -2,7 +2,7 @@
 
 ## Prerequisites
 To automatically push code changes, performing tests, building and pushing an image, deploying and application and performing health checks for this project you will need the following:
-* [Docker](https://docs.docker.com/engine/installation/)
+* [Docker](https://docs.docker.com/engine/install/ubuntu/)
 * [Docker post installation steps](https://docs.docker.com/engine/install/linux-postinstall/)
 * [Dockerhub](https://hub.docker.com/)
 
@@ -42,30 +42,30 @@ To automatically push code changes, performing tests, building and pushing an im
     ssh -i <PATH_TO_KEY.PEM> <AZURE_USERNAME>@<AZURE_VM_IP>
     
     ```
-    While inside the VM you have to install Docker and follow the Docker post installation steps. The links are in the prerequisites.  
 
-    After completing the installation of Docker you have to pull the forked repository:
+    Clone the forked repository:
     ```bash
-
-    git clone https://github.com/username/repository.git
-    cd repository
-    git fetch --all
-    git checkout branch-name
-    git pull origin branch-name
-
-    ```
-    The docker-compose files are the only ones thar are necessary to be present inside the VM, but we download the whole repository in order to deploy the initial version. This couls also be done on the VM creation.
-
-    Create the docker network externally: 
-    ```bash
-
-    docker network create monitoring-net
+    
+    git clone https://github.com/evripidaros/dev-ops-assignment-api.git
+    cd dev-ops-assignment-api
     
     ```
+    First you must set the name of your `DOCKERHUB_USERNAME` in  `.env` file with the same name as in GitHub Secrets and then you run the init_setup.sh to install all the prerequisites:
+
+    ```bash
+
+    chmod +x init_setup.sh
+    ./init_setup.sh
+    
+    ```
+    On a newly setup machine, relog may be required to setup properly non root docker user
+
 
 4. Access the Fastapi application
 
-    You can access the Fastapi application through `http://<AZURE_VM_IP>:8000` to the following endpoints:
+    You can now clone the repository in your local machine, make changes to the code and push back to the repository. 
+
+    You can now access the Fastapi application at `http://<AZURE_VM_IP>:8000` through the following endpoints:
 
     | Method | Endpoint             | Description                                 | Response Format  |
     |--------|----------------------|---------------------------------------------|------------------|
@@ -76,9 +76,9 @@ To automatically push code changes, performing tests, building and pushing an im
 
 ## CI-CD pipeline steps
    
-GitHub Actions is natively integrated with GitHub repositories, which means it doesn't require additional webhooks to be manually set up for standard workflows like running CI/CD pipelines when code is pushed, pull requests are made, or issues are created.
+GitHub Actions is natively integrated with GitHub repositories, thus removing the need for additional webhooks.
 
-- The pipeline will run everytime you push code to the main, staging or testing repositories. 
+- The pipeline will run everytime you push code to the main, staging or testing  branches. 
 
 - Three branches were chosen to execute the CI/CD pipeline, main branch is production/live code, staging for collaboration, and testing branch which was used to test the whole pipeline.
 
@@ -86,7 +86,7 @@ GitHub Actions is natively integrated with GitHub repositories, which means it d
 
     - GitHub deploys an ubuntu docker container to run the jobs.
 
- 1. Checkout the repository in order to retrieve latest changes
+    1. Checkout the repository in order to retrieve latest changes
 
     2. Setup python into the container.
 
@@ -108,8 +108,6 @@ GitHub Actions is natively integrated with GitHub repositories, which means it d
         SSH into the VM, curl `http://localhost:8000/health` endpoint.
         If it returns non-zero output, then roll back to an image tagged as "stable".
 
-        <!-- - **Note**: Docker compose was chosen because there may be more containers under development. These can be added as services to the docker compose file. Also we  choose to stop and start only the fastapi service in case there are other services that we do not want to touch. -->
-
 ### Design Decisions
 
 * We save all our credentials as secrets for security reasons.
@@ -118,29 +116,62 @@ GitHub Actions is natively integrated with GitHub repositories, which means it d
 * If health check failed, we use exit code 1 to break the pipeline and indicate it to the developer.
 * Since the deploy will deploy an image either way we could just print an informative message and return 0 (successful run)
 * It would be good practice to run the healthcheck outside of the the VM, directly curling to `http://<AZURE_VM_IP>:8000/health` without the ssh login, but that was not possible inside the GitΗub Runner at the moment.
+* We used the init_setup.sh inside the repository to simplify the process. Currently the github repository is a sinfge point of reference, for easier initial setup. In a production environment, upon VM creation a configurator would perform such tasks and the repository would not keep more than the required configuration details.
 
 ## Monitoring Implementation
 
-We have implemented prometheus, cadvidsor, alertmanager, nodexporter and grafana for monitoring the system.
+We have implemented Prometheus, cAdvidsor, Alertmanager, nodexporter and grafana for monitoring the system.
+
+To deploy the services run:
+
+```bash
+
+docker compose -f docker-compose.monitoring.yml up -d
+
+```
 
 The services can be accessed through your browser the following endpoints:
 
 ```bash
 
-Prometheus <AZURE_VM_IP>:8900
-cAdvisor <AZURE_VM_IP>:8940
-Alertmanager <AZURE_VM_IP>:8903
-Nodeexporter <AZURE_VM_IP>:8905
-Grafana <AZURE_VM_IP>:8950 username:admin password:admin
+Prometheus: <AZURE_VM_IP>:8900
+cAdvisor: <AZURE_VM_IP>:8940
+Alertmanager: <AZURE_VM_IP>:8903
+NodeExporter <AZURE_VM_IP>:8905
+Grafana: <AZURE_VM_IP>:8950 username:admin password:admin
 
 ```
 
-- cAdvisor is responsible for monitoring everything regarding container resources consumption. The graphs can be seen in the page and also in grafana.
+### Technologies
 
-- Alertmanager is responsible for alerting by modifying the alert.rules. We have implemented 3 alert rules for the cpu load, memory load, storage load and the moitoring of the fastapi service. If they fire up, a message in slack is sent.
+- cAdvisor is responsible for monitoring everything regarding container performance. The graphs can be seen in the cAdvisor endpoint and also in Grafana.
 
-- Nodeexporter is responsible for handling all the metrics of the host VM. In the /metrics tab you can see them in text format.
+- Alertmanager is responsible for alerting by modifying the alert.rules. We have implemented 4 alert rules for the cpu load, memory load, storage load and the moitoring of the fastapi service. If they fire up, a slack template is sent to slack.
+
+- NodeExporter is responsible for handling all the metrics of the host VM. In the /metrics tab you can see them in text format.
 
 - Prometheus monitoring monitors a lot of metrics like queries, http requests, latencies etc.
 
 - Grafana is responsible for visualizing all of the above.
+
+### Notes
+
+- After logging into Grafana into the dashborads tab you can see all the corresponding predefined dashboards.
+
+- Docker containers tabs includes the docker containers performance metrics (cAdvisor). We have implemented 2 custom panels that can be visualised through the dashboards.
+
+- Docker host tab monitors  the host VM performance metrics that Nodeexporter exposes.
+
+- Monitor services tab is the prometheus monitoring services.
+
+- If you stop the fastapi container, the custom panels in Docker container tab will indicate that fastapi service is down.
+
+- Alerts can be seen in the http://<AZURE_VM_IP>:8950/alerting/list. If you stop the fastapi container, the rule will fire up indicating that fastapi service is down.
+
+## Todo
+
+- In terms of observability we should add beyond metrics ( Prometheus) also Loki for logging and Tempo for traces.
+
+- A retention strategy for docker images is required.
+
+- Another approach for automated deployment would be the use of [watchtower](https://containrrr.dev/watchtower/). We used a more stable way to avoid additional dependancies.

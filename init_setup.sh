@@ -1,3 +1,7 @@
+set -a
+source .env
+set +a
+
 # Add Docker's official GPG key:
 sudo apt-get -y update &&
 sudo apt-get -y install ca-certificates curl &&
@@ -19,9 +23,7 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 
 # Create fastapi-net network and pull the stable image
-docker create network fastapi-net
+docker network create fastapi-net
 docker pull tzionasev/fastapi:stable
-
-# Clone the forked repository
-git clone https://github.com/evripidaros/dev-ops-assignment-api.git
-cd dev-ops-assignment-api
+docker tag tzionasev/fastapi:stable "${DOCKERHUB_USERNAME}"/fastapi:stable
+docker push "${DOCKERHUB_USERNAME}"/fastapi:stable
