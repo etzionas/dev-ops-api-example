@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install --upgrade pip && pip install --progress-bar off --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip && pip install --progress-bar off --no-use-pep517 --no-cache-dir -r requirements.txt
 
 COPY . .
 
