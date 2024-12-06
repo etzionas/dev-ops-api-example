@@ -21,5 +21,4 @@ def read_item(item_id: int, q: str = None):
 def health_check():
     # comment out the following line to simulate a failing health check
     # raise HTTPException(status_code=500, detail="Internal Server Error")
-    # comment
     return {"status": "ok"}
