@@ -12,7 +12,7 @@ pipeline {
                 script {
                     // Fetch latest workflow run details
                     def response = sh(script: """
-                        curl -s -H "Authorization: Bearer ${GITHUB_TOKEN1}" \
+                        curl -s -H "Authorization: Bearer ${GITHUB_TOKEN}" \
                         https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/runs
                         """, returnStdout: true).trim()
                     
@@ -23,7 +23,7 @@ pipeline {
 
                     // Download the logs
                     sh """
-                        curl -s -L -H "Authorization: Bearer ${GITHUB_TOKEN1}" \
+                        curl -s -L -H "Authorization: Bearer ${GITHUB_TOKEN}" \
                         https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/runs/${latestRunId}/logs \
                         -o logs.zip
                     """
