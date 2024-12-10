@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'docker-agent-debian' }
     environment {
         GITHUB_REPO = "etzionas/dev-ops-api-example"
         GITHUB_TOKEN = credentials('github_token') // GitHub token from Jenkins credentials
