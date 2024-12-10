@@ -10,7 +10,7 @@ pipeline {
         GenericTrigger(
             genericVariables: [
                 [key: 'workflow_run_status', value: '$.action'],
-                [key: 'workflow_run_id', value: '$workflow_run.id']
+                [key: 'workflow_run_id', value: '$.workflow_run.id']
             ],
             token: 'github-webhook-secret',
             causeString: 'Triggered by workflow_run event',
