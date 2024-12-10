@@ -12,7 +12,7 @@ pipeline {
                 [key: 'workflow_run_status', value: '$action'],
                 [key: 'workflow_run_id', value: '$workflow_run.id']
             ],
-            token: credentials('github-webhook-secret'), // Optional: If a secret is configured in GitHub webhook
+            token: 'github-webhook-secret',
             causeString: 'Triggered by workflow_run event',
             printContributedVariables: true,
             printPostContent: true,
