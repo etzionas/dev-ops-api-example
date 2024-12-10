@@ -6,10 +6,31 @@ pipeline {
         REPO_OWNER = 'etzionas'
         REPO_NAME = 'dev-ops-api-example'
     }
+    triggers{
+        GenericTrigger(
+            genericVariables: [
+                [key: 'workflow_run_status', value: '$action'],
+                [key: 'workflow_run_id', value: '$workflow_run.id']
+            ],
+            token: credentials('github-webhook-secret'), // Optional: If a secret is configured in GitHub webhook
+            causeString: 'Triggered by workflow_run event',
+            printContributedVariables: true,
+            printPostContent: true,
+            regexpFilterExpression: '^completed$', // Only trigger when the workflow is finished
+            regexpFilterText: '$workflow_run_status' 
+        )
+    }
     stages {
         stage('Fetch GitHub Action Logs') {
             steps {
                 script {
+                    def workflowRunId = env.workflow_run_id
+                    if (!workflowRunId) {
+                        error "Workflow run ID not provided in webhook payload."
+                    }
+                    
+                    echo "Fetching logs for Workflow Run ID: ${workflowRunId}"
+
                     // Fetch latest workflow run details
                     def response = sh(script: """
                         curl -s -H "Authorization: Bearer ${GITHUB_TOKEN}" \
