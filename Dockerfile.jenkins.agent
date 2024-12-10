@@ -1,0 +1,12 @@
+FROM jenkins/agent:bookworm-jdk17
+
+# USER jenkins
+
+USER root
+
+# Install unzip package
+RUN apt-get update && apt-get install -y unzip && apt-get clean
+
+USER jenkins  # Switch back to the jenkins user
+
+ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
