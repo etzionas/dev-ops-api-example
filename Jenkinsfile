@@ -41,15 +41,15 @@ pipeline {
                     sh """
                         curl -s -L -H "Authorization: Bearer ${GITHUB_TOKEN}" \
                         https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/runs/${workflowRunId}/logs \
-                        -o logs.tar
+                        -o logs.zip
                     """
-
-                    // Unzip and display logs
-                    sh """
-                        mkdir -p logs
-                        tar -xzf logs.tar -C logs
-                        cat logs/**/*.txt'
-                    """
+                    // // Unzip and display logs
+                    // sh """
+                    //     mkdir -p logs
+                    //     tar -xzf logs.tar -C logs
+                    //     cat logs/**/*.txt'
+                    // """
+                    sh 'unzip -o logs.zip -d logs && cat logs/**/*.txt'
                 }
             }
         }
