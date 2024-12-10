@@ -24,10 +24,10 @@ pipeline {
         stage('Fetch GitHub Action Logs') {
             steps {
                 script {
-                    def workflowRunId = env.workflow_run_id
-                    if (!workflowRunId) {
-                        error "Workflow run ID not provided in webhook payload."
-                    }
+                    // def workflowRunId = env.workflow_run_id
+                    // if (!workflowRunId) {
+                    //     error "Workflow run ID not provided in webhook payload."
+                    // }
                     
                     echo "Fetching logs for Workflow Run ID: ${workflowRunId}"
 
